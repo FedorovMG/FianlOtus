@@ -1,0 +1,10 @@
+---
+- name: Airflow
+  hosts: Airflow
+  remote_user: ubuntu
+  become: yes
+
+  tasks:
+    - name: ping hosts
+    - ping
+        
