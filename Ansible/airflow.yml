@@ -1,10 +1,14 @@
 ---
 - name: Airflow
-  hosts: Airflow
+  hosts: airflow
   remote_user: ubuntu
   become: yes
 
   tasks:
-    - name: ping hosts
-    - ping
+    - ansible.builtin.ping:
+        
+        
+        
+        
+        
         
