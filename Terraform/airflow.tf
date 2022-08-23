@@ -20,17 +20,3 @@ resource "yandex_compute_instance" "airflow" {
     ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}" 
   }
 }
-
-resource "yandex_vpc_security_group" "airflow-ports" {
-  network_id = yandex_vpc_network.data_net.id
-  ingress {
-    protocol = "TCP"
-    v4_cidr_blocks = [ "10.0.1.0/24" ]
-    port = 22 
-  }
-  ingress {
-    protocol = "TCP"
-    v4_cidr_blocks = [ "10.0.1.0/24" ]
-    port = 8080
-  }
-}

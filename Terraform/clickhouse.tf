@@ -21,6 +21,7 @@ resource "yandex_compute_instance" "clickhouse" {
   }
 }
 
+
 /*
 resource "yandex_vpc_security_group" "airflow-ports" {
   network_id = yandex_vpc_network.data_net.id
