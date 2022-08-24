@@ -28,8 +28,12 @@
           - clickhouse-server
           - clickhouse-client
     
-    - name: Start ClickHouse
+    - name: Config ClickHouse
+      ansible.builtin.copy:
+        src: ./config.xml
+        dest: /etc/clickhouse-server/config.d/config.xml
+
+    - name: Restart ClickHouse
       ansible.builtin.service:
         name: clickhouse-server
-        state: started
-
+        state: restarted
