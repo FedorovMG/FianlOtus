@@ -5,12 +5,12 @@
   tasks:
           
     - name: Copy RedashInstall.sh
-      ansible.builtin.copy:
+      copy:
         src: ./RedashInstall.sh
         dest: ./RedashInstall.sh
         mode: u+x
 
     - name: Install Redash
       become: yes
-      ansible.builtin.shell:
+      shell:
         cmd: ./RedashInstall.sh

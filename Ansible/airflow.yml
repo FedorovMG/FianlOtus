@@ -1,6 +1,10 @@
 ---
 - hosts: airflow
   remote_user: ubuntu
+
+  environment:
+    AIRFLOW__CORE__LOAD_EXAMPLES: False
+    AIRFLOW_HOME: ~/airflow
   
   tasks:
         
@@ -10,13 +14,36 @@
         name: python3-pip 
         update_cache: true
     
-    - name: Copy AirflowInstall.sh
-      ansible.builtin.copy:
-        src: ./AirflowInstall.sh
-        dest: ./AirflowInstall.sh
-        mode: u+x
-
-    - name: Install Airflow
+    - name: Install AirflowInstall
       become: yes
-      ansible.builtin.shell:
-        cmd: ./AirflowInstall.sh
+      ansible.builtin.pip:
+        name:
+          - apache-airflow==2.3.3
+        extra_args: --constraint https://raw.githubusercontent.com/apache/airflow/constraints-2.3.3/constraints-3.8.txt
+
+    - name: Create dags directory
+      ansible.builtin.file:
+        path: ~/airflow/dags
+        state: directory
+
+    - name: Create plagins directory
+      ansible.builtin.file:
+        path: ~/airflow/plugins
+        state: directory
+        
+    
+    - name: Airflow DB init
+      shell:
+        cmd: airflow db init
+
+    - name: Add User
+      shell:
+        cmd: airflow users create --username fedorovmg --firstname Maksim --lastname Fedorov --role Admin --password fmg123 --email fedorovmg@hotmail.com
+    
+    - name: Start Airflow webserver
+      shell:
+        cmd: airflow webserver --port 8080 -D
+
+    - name: Start Airflow Scheduler
+      shell:
+        cmd: airflow scheduler -D
