@@ -1,11 +1,18 @@
 from clickhouse_driver import Client
 import csv
 
-client = Client('localhost')
+client = Client('62.84.114.40')
 
 client.execute(
     '''
-    CREATE TABLE my_test.simpson_episode
+    CREATE DATABASE SIMPSONS
+    '''
+)
+
+
+client.execute(
+    '''
+    CREATE TABLE SIMPSONS.simpson_episode
         (
             id INT,
             title VARCHAR,

@@ -2,10 +2,10 @@ from datetime import date, datetime
 from clickhouse_driver import Client
 import csv
 
-client = Client('localhost')
+client = Client('62.84.114.40')
 
 def row_reader():
-    with open('/home/admin-f/MyProjects/FinalOtus/CSV_Data/simpsons_episodes.csv') as simpsons_csv:
+    with open('../FianlOtus/CSV_Data/simpsons_episodes.csv') as simpsons_csv:
         reader = csv.DictReader(simpsons_csv)
         next(reader, None)
         for line in reader:
@@ -22,5 +22,5 @@ def row_reader():
                 'imdb_rating' : float(line['imdb_rating'])
             }
             
-client.execute("INSERT INTO my_test.simpson_episode VALUES", (line for line in row_reader()))
+client.execute("INSERT INTO SIMPSONS.simpson_episode VALUES", (line for line in row_reader()))
 
