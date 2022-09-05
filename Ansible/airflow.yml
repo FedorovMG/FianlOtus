@@ -20,6 +20,12 @@
         name:
           - apache-airflow==2.3.3
         extra_args: --constraint https://raw.githubusercontent.com/apache/airflow/constraints-2.3.3/constraints-3.8.txt
+    
+    - name: Install Clickhouse driver
+      become: yes
+      ansible.builtin.pip:
+        name:
+          - clickhouse-driver
 
     - name: Create dags directory
       ansible.builtin.file:
@@ -30,8 +36,25 @@
       ansible.builtin.file:
         path: ~/airflow/plugins
         state: directory
-        
+
+    - name: Create directory for CSV
+      ansible.builtin.file:
+        path: ~/csv
+        state: directory
+
+    - name: Copy CSV files
+      copy:
+        src: /home/admin-f/MyProjects/FianlOtus/CSV_Data/simpsons_episodes.csv
+        dest: ~/csv
     
+    - name: Copy DAG files
+      copy:
+        src: "{{ item }}"
+        dest: ~/airflow/dags
+      with_fileglob:
+        - /home/admin-f/MyProjects/FianlOtus/DAGs/*.py
+      
+
     - name: Airflow DB init
       shell:
         cmd: airflow db init
